@@ -1,0 +1,200 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome - PHMS{% endblock %}
+
+{% block content %}
+<div class="landing-page">
+    <!-- Animated Background Gradient -->
+    <div class="landing-gradient-bg"></div>
+    <div class="landing-gradient-orb orb-1"></div>
+    <div class="landing-gradient-orb orb-2"></div>
+    <div class="landing-gradient-orb orb-3"></div>
+    
+    <!-- Hero Section -->
+    <div class="landing-hero">
+        <div class="hero-badge">
+            <span class="badge-icon">✨</span>
+            <span>Next-Generation Health Management</span>
+        </div>
+        
+        <h1 class="hero-title">
+            <span class="project-name">Patient Health Data Management System</span>
+            Transform Patient Care with
+            <span class="gradient-text">Intelligent Health Records</span>
+        </h1>
+        
+        <p class="hero-subtitle">
+            Empower your practice with AI-powered analytics, seamless data visualization, 
+            and secure patient management—all in one powerful platform.
+        </p>
+        
+        <div class="hero-cta">
+            <a href="{{ url_for('auth.login') }}" class="btn-hero btn-hero-primary">
+                <span class="btn-icon">🚀</span>
+                <span>Get Started</span>
+                <span class="btn-arrow">→</span>
+            </a>
+            <a href="#features" class="btn-hero btn-hero-outline">
+                <span class="btn-icon">📖</span>
+                <span>Learn More</span>
+            </a>
+        </div>
+        
+        <!-- Stats Section -->
+        <div class="hero-stats">
+            <div class="stat-item">
+                <div class="stat-icon">👥</div>
+                <div class="stat-value" data-count="1000">0+</div>
+                <div class="stat-label">Patients Managed</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon">📈</div>
+                <div class="stat-value" data-count="50000">0+</div>
+                <div class="stat-label">Health Records</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon">⚡</div>
+                <div class="stat-value">99.9%</div>
+                <div class="stat-label">Uptime</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon">🔐</div>
+                <div class="stat-value">100%</div>
+                <div class="stat-label">HIPAA Compliant</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Features Section -->
+    <div class="landing-features" id="features">
+        <h2 class="section-heading">Powerful Features for Modern Healthcare</h2>
+        <p class="section-subheading">Everything you need to manage patient health data efficiently</p>
+        
+        <div class="features-grid">
+            <div class="feature-card feature-primary">
+                <div class="feature-card-glow"></div>
+                <div class="feature-icon-large">📊</div>
+                <h3>Advanced Analytics</h3>
+                <p>Visualize health trends with interactive time-series charts. Track vitals, lab results, and key metrics with intelligent graphs that highlight abnormalities.</p>
+                <ul class="feature-list">
+                    <li>✓ Real-time trend visualization</li>
+                    <li>✓ Custom date range filters</li>
+                    <li>✓ Automatic anomaly detection</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card feature-secondary">
+                <div class="feature-card-glow"></div>
+                <div class="feature-icon-large">🤖</div>
+                <h3>AI-Powered Extraction</h3>
+                <p>Upload lab reports and let our AI automatically extract and categorize health data. Reduce manual entry time by 90% with intelligent document processing.</p>
+                <ul class="feature-list">
+                    <li>✓ Multi-format support (PDF, images)</li>
+                    <li>✓ 95%+ accuracy rate</li>
+                    <li>✓ Smart data validation</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card feature-accent">
+                <div class="feature-card-glow"></div>
+                <div class="feature-icon-large">🔒</div>
+                <h3>Enterprise Security</h3>
+                <p>Bank-level encryption and HIPAA-compliant infrastructure ensure patient data remains confidential. Role-based access control for your entire team.</p>
+                <ul class="feature-list">
+                    <li>✓ End-to-end encryption</li>
+                    <li>✓ Audit trail logging</li>
+                    <li>✓ Secure authentication</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card feature-success">
+                <div class="feature-card-glow"></div>
+                <div class="feature-icon-large">⚡</div>
+                <h3>Lightning Fast</h3>
+                <p>Optimized performance ensures instant access to patient records. Search through thousands of patients and millions of data points in milliseconds.</p>
+                <ul class="feature-list">
+                    <li>✓ Sub-second search results</li>
+                    <li>✓ Optimized database queries</li>
+                    <li>✓ Responsive interface</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card feature-warning">
+                <div class="feature-card-glow"></div>
+                <div class="feature-icon-large">🔔</div>
+                <h3>Smart Alerts</h3>
+                <p>Get notified about critical values, medication interactions, and important health milestones. Never miss a critical patient update.</p>
+                <ul class="feature-list">
+                    <li>✓ Customizable alert rules</li>
+                    <li>✓ Email notifications</li>
+                    <li>✓ Priority flagging</li>
+                </ul>
+            </div>
+            
+            <div class="feature-card feature-info">
+                <div class="feature-card-glow"></div>
+                <div class="feature-icon-large">📱</div>
+                <h3>Responsive Design</h3>
+                <p>Access patient data from any device—desktop, tablet, or mobile. Beautifully designed interface that works everywhere you do.</p>
+                <ul class="feature-list">
+                    <li>✓ Mobile-optimized layout</li>
+                    <li>✓ Touch-friendly controls</li>
+                    <li>✓ Cross-browser support</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- CTA Section -->
+    <div class="landing-cta-section">
+        <div class="cta-card">
+            <h2>Ready to Transform Your Practice?</h2>
+            <p>Join hundreds of healthcare providers using PHMS to deliver better patient care</p>
+            <a href="{{ url_for('auth.login') }}" class="btn-hero btn-hero-primary btn-hero-large">
+                <span class="btn-icon">🏥</span>
+                <span>Start Managing Patients</span>
+                <span class="btn-arrow">→</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+// Animate stat counters on scroll
+document.addEventListener('DOMContentLoaded', function() {
+    const statValues = document.querySelectorAll('.stat-value');
+    let animated = false;
+    
+    function animateCounters() {
+        if (animated) return;
+        
+        const heroStats = document.querySelector('.hero-stats');
+        const rect = heroStats.getBoundingClientRect();
+        const isVisible = rect.top < window.innerHeight && rect.bottom >= 0;
+        
+        if (isVisible) {
+            animated = true;
+            statValues.forEach(stat => {
+                const target = parseInt(stat.getAttribute('data-count'));
+                if (!target) return;
+                
+                let current = 0;
+                const increment = target / 50;
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        stat.textContent = target.toLocaleString() + '+';
+                        clearInterval(timer);
+                    } else {
+                        stat.textContent = Math.floor(current).toLocaleString() + '+';
+                    }
+                }, 30);
+            });
+        }
+    }
+    
+    window.addEventListener('scroll', animateCounters);
+    animateCounters(); // Check on load
+});
+</script>
+{% endblock %}

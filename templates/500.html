@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}500 - Server Error{% endblock %}
+
+{% block content %}
+<div class="error-page">
+    <div class="error-content">
+        <h1 class="error-code">500</h1>
+        <h2>Internal Server Error</h2>
+        <p>Something went wrong. Please try again later.</p>
+        <a href="{{ url_for('patients.dashboard') if is_logged_in else url_for('landing') }}" class="btn btn-primary">
+            Go to {{ 'Dashboard' if is_logged_in else 'Home' }}
+        </a>
+    </div>
+</div>
+{% endblock %}

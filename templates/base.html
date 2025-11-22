@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}PHMS - Patient Health Data Management System{% endblock %}</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    {% if is_logged_in %}
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <a href="{{ url_for('patients.dashboard') }}">
+                    <span class="brand-icon">🏥</span>
+                    <span class="brand-text">PHMS</span>
+                </a>
+            </div>
+            
+            <div class="nav-links">
+                <a href="{{ url_for('patients.dashboard') }}" class="nav-link">
+                    <span>📊</span> Dashboard
+                </a>
+                <a href="{{ url_for('patients.add_patient_page') }}" class="nav-link">
+                    <span>➕</span> Add Patient
+                </a>
+                <a href="{{ url_for('admin.manage') }}" class="nav-link">
+                    <span>👥</span> Admins
+                </a>
+            </div>
+            
+            <div class="nav-user">
+                <span class="user-name">{{ admin_name }}</span>
+                <a href="{{ url_for('auth.logout') }}" class="btn btn-outline">Logout</a>
+            </div>
+        </div>
+    </nav>
+    {% endif %}
+    
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="flash-container">
+            {% for category, message in messages %}
+            <div class="flash flash-{{ category }}">
+                <span class="flash-icon">
+                    {% if category == 'success' %}✓
+                    {% elif category == 'error' %}✗
+                    {% elif category == 'warning' %}⚠
+                    {% else %}ℹ{% endif %}
+                </span>
+                <span class="flash-message">{{ message }}</span>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    {% endwith %}
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 PHMS - Patient Health Data Management System</p>
+    </footer>
+    
+    <!-- Auto-dismiss flash messages -->
+    <script>
+        // Auto-dismiss flash messages after 1 second
+        document.addEventListener('DOMContentLoaded', function() {
+            const flashMessages = document.querySelectorAll('.flash');
+            flashMessages.forEach(function(flash) {
+                setTimeout(function() {
+                    flash.style.transition = 'opacity 0.3s, transform 0.3s';
+                    flash.style.opacity = '0';
+                    flash.style.transform = 'translateX(100%)';
+                    setTimeout(function() {
+                        flash.remove();
+                    }, 300);
+                }, 3000); // 3 second delay
+            });
+        });
+    </script>
+    
+    {% block scripts %}{% endblock %}
+</body>
+</html>

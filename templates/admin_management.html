@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Management - PHMS{% endblock %}
+
+{% block content %}
+<div class="admin-page">
+    <div class="page-header">
+        <h1>Admin Management</h1>
+        <a href="{{ url_for('patients.dashboard') }}" class="btn btn-outline">← Back to Dashboard</a>
+    </div>
+    
+    <div class="admin-content">
+        <!-- Add New Admin Form -->
+        <div class="admin-card">
+            <h2>Add New Admin</h2>
+            <p class="card-description">Create a new admin account with access to the system</p>
+            
+            <form method="POST" action="{{ url_for('admin.create') }}" class="admin-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="userId">User ID <span class="required">*</span></label>
+                        <input 
+                            type="text" 
+                            id="userId" 
+                            name="userId" 
+                            class="form-control" 
+                            required
+                            placeholder="Unique username or email"
+                        >
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="name">Full Name <span class="required">*</span></label>
+                        <input 
+                            type="text" 
+                            id="name" 
+                            name="name" 
+                            class="form-control" 
+                            required
+                            placeholder="Admin's full name"
+                        >
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="password">Password <span class="required">*</span></label>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            class="form-control" 
+                            required
+                            minlength="6"
+                            placeholder="Min 6 characters"
+                        >
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="secretPassword">Secret Password <span class="required">*</span></label>
+                        <input 
+                            type="password" 
+                            id="secretPassword" 
+                            name="secretPassword" 
+                            class="form-control" 
+                            required
+                            placeholder="Internal verification code"
+                        >
+                        <small class="form-hint">Required for admin operations</small>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">
+                    Create Admin Account
+                </button>
+            </form>
+        </div>
+        
+        <!-- Existing Admins List -->
+        <div class="admin-card">
+            <h2>Existing Admins</h2>
+            
+            {% if admins %}
+            <div class="admin-list">
+                {% for admin in admins %}
+                <div class="admin-item">
+                    <div class="admin-avatar">👤</div>
+                    <div class="admin-info">
+                        <div class="admin-name">{{ admin.name }}</div>
+                        <div class="admin-userid">{{ admin.userId }}</div>
+                    </div>
+                    <div class="admin-meta">
+                        <span class="admin-status {{ 'active' if admin.isActive else 'inactive' }}">
+                            {{ 'Active' if admin.isActive else 'Inactive' }}
+                        </span>
+                        <span class="admin-date">
+                            Joined {{ admin.createdAt.strftime('%b %d, %Y') if admin.createdAt else 'N/A' }}
+                        </span>
+                    </div>
+                    <div class="admin-actions">
+                        {% if admin._id|string == session.admin_id %}
+                        <button 
+                            class="btn btn-delete btn-disabled" 
+                            disabled 
+                            title="You cannot delete your own account"
+                        >
+                            <span class="btn-icon">🔒</span>
+                            <span>Cannot Delete Self</span>
+                        </button>
+                        {% else %}
+                        <button 
+                            class="btn btn-delete" 
+                            onclick="confirmDelete('{{ admin._id }}', '{{ admin.name }}')"
+                            title="Delete this admin"
+                        >
+                            <span class="btn-icon">🗑️</span>
+                            <span>Delete</span>
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="empty-message">No admins found.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>⚠️ Confirm Deletion</h3>
+        </div>
+        <div class="modal-body">
+            <p>Are you sure you want to delete admin <strong id="deleteAdminName"></strong>?</p>
+            <p class="warning-text">This action cannot be undone!</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-outline" onclick="closeDeleteModal()">Cancel</button>
+            <form id="deleteForm" method="POST" style="display: inline;">
+                <button type="submit" class="btn btn-danger">Delete Admin</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+// Delete confirmation modal
+function confirmDelete(adminId, adminName) {
+    document.getElementById('deleteAdminName').textContent = adminName;
+    document.getElementById('deleteForm').action = "{{ url_for('admin.delete', admin_id='') }}" + adminId;
+    document.getElementById('deleteModal').style.display = 'flex';
+}
+
+function closeDeleteModal() {
+    document.getElementById('deleteModal').style.display = 'none';
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+    const modal = document.getElementById('deleteModal');
+    if (event.target === modal) {
+        closeDeleteModal();
+    }
+}
+
+// Close modal with Escape key
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        closeDeleteModal();
+    }
+});
+</script>
+{% endblock %}

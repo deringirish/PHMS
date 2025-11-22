@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+
+{% block title %}Add Patient - PHMS{% endblock %}
+
+{% block content %}
+<div class="form-page">
+    <div class="page-header">
+        <h1>Add New Patient</h1>
+        <a href="{{ url_for('patients.dashboard') }}" class="btn btn-outline">← Back to Dashboard</a>
+    </div>
+    
+    <div class="form-container">
+        <form method="POST" action="{{ url_for('patients.create_patient') }}" class="patient-form">
+            <div class="form-section">
+                <h3 class="section-title">Basic Information</h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="fullName">Full Name <span class="required">*</span></label>
+                        <input 
+                            type="text" 
+                            id="fullName" 
+                            name="fullName" 
+                            class="form-control" 
+                            required
+                            placeholder="Enter patient's full name"
+                        >
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="age">Age</label>
+                        <input 
+                            type="number" 
+                            id="age" 
+                            name="age" 
+                            class="form-control"
+                            min="0"
+                            max="150"
+                            placeholder="Age in years"
+                        >
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="gender">Gender</label>
+                        <select id="gender" name="gender" class="form-control">
+                            <option value="">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3 class="section-title">Contact Information</h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="contactNumber">Contact Number</label>
+                        <input 
+                            type="tel" 
+                            id="contactNumber" 
+                            name="contactNumber" 
+                            class="form-control"
+                            placeholder="Phone number"
+                        >
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            class="form-control"
+                            placeholder="email@example.com"
+                        >
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <textarea 
+                        id="address" 
+                        name="address" 
+                        class="form-control"
+                        rows="3"
+                        placeholder="Full address"
+                    ></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="emergencyContact">Emergency Contact</label>
+                    <input 
+                        type="text" 
+                        id="emergencyContact" 
+                        name="emergencyContact" 
+                        class="form-control"
+                        placeholder="Name and phone number"
+                    >
+                </div>
+            </div>
+            
+            <div class="form-section">
+                <h3 class="section-title">Medical History</h3>
+                
+                <div class="form-group">
+                    <label>Known Medical Conditions</label>
+                    <div class="checkbox-grid">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="medicalConditions" value="Diabetes">
+                            <span>Diabetes</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="medicalConditions" value="Hypertension">
+                            <span>Hypertension</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="medicalConditions" value="Thyroid Disorder">
+                            <span>Thyroid Disorder</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="medicalConditions" value="Heart Disease">
+                            <span>Heart Disease</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="medicalConditions" value="Kidney Disease">
+                            <span>Kidney Disease</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="medicalConditions" value="Liver Disease">
+                            <span>Liver Disease</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="medicalConditions" value="Asthma">
+                            <span>Asthma</span>
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="medicalConditions" value="Cancer">
+                            <span>Cancer</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary btn-large">
+                    Add Patient
+                </button>
+                <a href="{{ url_for('patients.dashboard') }}" class="btn btn-outline">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

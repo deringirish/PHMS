@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}Patient Dashboard - PHMS{% endblock %}
+
+{% block content %}
+<div class="dashboard-page">
+    <div class="page-header">
+        <h1>Patient Dashboard</h1>
+        <a href="{{ url_for('patients.add_patient_page') }}" class="btn btn-primary">
+            ➕ Add New Patient
+        </a>
+    </div>
+    
+    <div class="search-section">
+        <form method="GET" action="{{ url_for('patients.dashboard') }}" class="search-form">
+            <input 
+                type="text" 
+                name="search" 
+                class="search-input" 
+                placeholder="Search patients by name..."
+                value="{{ search_query if search_query else '' }}"
+            >
+            <button type="submit" class="btn btn-secondary">Search</button>
+            {% if search_query %}
+            <a href="{{ url_for('patients.dashboard') }}" class="btn btn-outline">Clear</a>
+            {% endif %}
+        </form>
+    </div>
+    
+    <div class="patients-grid">
+        {% if patients %}
+            {% for patient in patients %}
+            <div class="patient-card">
+                <div class="patient-card-header">
+                    <h3>{{ patient.fullName }}</h3>
+                    <span class="patient-id">#{{ patient._id }}</span>
+                </div>
+                
+                <div class="patient-card-body">
+                    <div class="patient-info">
+                        {% if patient.age %}
+                        <div class="info-item">
+                            <span class="info-label">Age:</span>
+                            <span class="info-value">{{ patient.age }} years</span>
+                        </div>
+                        {% endif %}
+                        
+                        {% if patient.gender %}
+                        <div class="info-item">
+                            <span class="info-label">Gender:</span>
+                            <span class="info-value">{{ patient.gender }}</span>
+                        </div>
+                        {% endif %}
+                        
+                        {% if patient.contactNumber %}
+                        <div class="info-item">
+                            <span class="info-label">Contact:</span>
+                            <span class="info-value">{{ patient.contactNumber }}</span>
+                        </div>
+                        {% endif %}
+                        
+                        {% if patient.medicalConditions and patient.medicalConditions|length > 0 %}
+                        <div class="info-item">
+                            <span class="info-label">Conditions:</span>
+                            <div class="conditions-tags">
+                                {% for condition in patient.medicalConditions %}
+                                <span class="condition-tag">{{ condition }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="patient-card-footer">
+                    <a href="{{ url_for('patients.patient_detail', patient_id=patient._id) }}" class="btn btn-primary btn-sm">
+                        View Details →
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <div class="empty-icon">👤</div>
+                <h3>No patients found</h3>
+                <p>
+                    {% if search_query %}
+                    No patients match your search query.
+                    {% else %}
+                    Get started by adding your first patient.
+                    {% endif %}
+                </p>
+                <a href="{{ url_for('patients.add_patient_page') }}" class="btn btn-primary">
+                    Add First Patient
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
