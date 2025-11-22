@@ -11,11 +11,5 @@
       "src": "/(.*)",
       "dest": "api/index.py"
     }
-  ],
-  "env": {
-    "FLASK_SECRET_KEY": "@flask_secret_key",
-    "MONGODB_URI": "@mongodb_uri",
-    "DATABASE_NAME": "@database_name",
-    "GEMINI_API_KEY": "@gemini_api_key"
-  }
+  ]
 }
