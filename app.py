@@ -17,8 +17,18 @@ from routes.record_routes import init_record_routes
 app = Flask(__name__)
 app.config.from_object(Config)
 
-# Set up MongoDB connection
-mongo_client = MongoClient(Config.MONGODB_URI)
+# Set up MongoDB connection with Vercel-compatible settings
+# Add SSL/TLS parameters to avoid handshake errors in serverless environment
+mongo_client = MongoClient(
+    Config.MONGODB_URI,
+    serverSelectionTimeoutMS=5000,  # Shorter timeout for serverless
+    connectTimeoutMS=10000,
+    socketTimeoutMS=10000,
+    tls=True,  # Explicitly enable TLS
+    tlsAllowInvalidCertificates=False,  # Keep certificates valid
+    retryWrites=True,
+    w='majority'
+)
 db = mongo_client[Config.DATABASE_NAME]
 
 # Initialize and register blueprints
