@@ -1,14 +1,29 @@
 """
 Vercel Serverless Function Entry Point
-This file is required for Vercel to run the Flask application as a serverless function.
 """
 import sys
 import os
 
-# Add the parent directory to the path so we can import app
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# Add parent directory to Python path
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_dir)
+sys.path.insert(0, parent_dir)
 
-from app import app
-
-# Vercel will use this 'app' object to handle requests
-# The app is already configured in app.py with all routes and settings
+# Try to import and handle errors gracefully
+try:
+    from app import app
+    application = app
+except Exception as e:
+    # If there's an error, create a simple Flask app that shows the error
+    from flask import Flask, jsonify
+    app = Flask(__name__)
+    application = app
+    
+    @app.route('/')
+    @app.route('/<path:path>')
+    def error_handler(path=''):
+        return jsonify({
+            'error': 'Application failed to initialize',
+            'message': str(e),
+            'type': type(e).__name__
+        }), 500
