@@ -32,14 +32,8 @@ app.register_blueprint(admin_bp)
 app.register_blueprint(patients_bp)
 app.register_blueprint(records_bp)
 
-# Ensure upload folder exists (only for local development)
-# Vercel has read-only filesystem, use cloud storage for production
-try:
-    os.makedirs(Config.UPLOAD_FOLDER, exist_ok=True)
-except (PermissionError, OSError):
-    # Running in serverless environment (Vercel)
-    # File uploads should use cloud storage
-    pass
+# Ensure upload folder exists
+os.makedirs(Config.UPLOAD_FOLDER, exist_ok=True)
 
 # Landing page route
 @app.route('/')
@@ -71,21 +65,17 @@ def inject_user():
         'is_logged_in': 'admin_id' in session
     }
 
-# For local development
 if __name__ == '__main__':
     print("=" * 60)
     print("Patient Health Data Management System (PHMS)")
     print("=" * 60)
     print(f"Database: {Config.DATABASE_NAME}")
-    print(f"MongoDB URI: {Config.MONGODB_URI[:50]}...")  # Truncate for security
+    print(f"MongoDB URI: {Config.MONGODB_URI}")
     print(f"Upload Folder: {Config.UPLOAD_FOLDER}")
     print(f"Gemini API Configured: {'Yes' if Config.GEMINI_API_KEY else 'No'}")
     print("=" * 60)
     print("Starting server on http://localhost:5000")
     print("=" * 60)
     
-    app.run(debug=True, host='0.0.0.0', port=5000)
-
-# Export app for Vercel (or other WSGI servers)
-# This allows api/index.py to import the app without running __main__
-
+    # app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run()

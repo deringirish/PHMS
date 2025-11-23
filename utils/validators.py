@@ -113,8 +113,29 @@ def validate_admin_data(data):
     if not data.get('name') or not data.get('name').strip():
         return False, 'Name is required'
     
-    if not data.get('password') or len(data.get('password', '')) < 6:
-        return False, 'Password must be at least 6 characters'
+    # Enhanced password validation
+    password = data.get('password', '')
+    if not password:
+        return False, 'Password is required'
+    
+    if len(password) < 8:
+        return False, 'Password must be at least 8 characters'
+    
+    # Check for at least one uppercase letter
+    if not re.search(r'[A-Z]', password):
+        return False, 'Password must contain at least one uppercase letter'
+    
+    # Check for at least one lowercase letter
+    if not re.search(r'[a-z]', password):
+        return False, 'Password must contain at least one lowercase letter'
+    
+    # Check for at least one number
+    if not re.search(r'\d', password):
+        return False, 'Password must contain at least one number'
+    
+    # Check for at least one special character
+    if not re.search(r'[!@#$%^&*(),.?":{}|<>_\-+=\[\]\\\/`~;]', password):
+        return False, 'Password must contain at least one special character (!@#$%^&*(),.?":{}|<>_-+=[]\\\/`~;)'
     
     if not data.get('secretPassword') or not data.get('secretPassword').strip():
         return False, 'Secret password is required'

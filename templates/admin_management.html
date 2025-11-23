@@ -15,7 +15,7 @@
             <h2>Add New Admin</h2>
             <p class="card-description">Create a new admin account with access to the system</p>
             
-            <form method="POST" action="{{ url_for('admin.create') }}" class="admin-form">
+            <form method="POST" action="{{ url_for('admin.create') }}" class="admin-form" id="adminForm">
                 <div class="form-row">
                     <div class="form-group">
                         <label for="userId">User ID <span class="required">*</span></label>
@@ -51,9 +51,33 @@
                             name="password" 
                             class="form-control" 
                             required
-                            minlength="6"
-                            placeholder="Min 6 characters"
+                            minlength="8"
+                            placeholder="Min 8 characters"
                         >
+                        <!-- Password Requirements Checklist -->
+                        <div id="passwordRequirements" class="password-requirements">
+                            <div class="requirement-header">Password must contain:</div>
+                            <div class="requirement-item" id="req-length">
+                                <span class="req-icon">○</span>
+                                <span class="req-text">At least 8 characters</span>
+                            </div>
+                            <div class="requirement-item" id="req-uppercase">
+                                <span class="req-icon">○</span>
+                                <span class="req-text">At least one uppercase letter (A-Z)</span>
+                            </div>
+                            <div class="requirement-item" id="req-lowercase">
+                                <span class="req-icon">○</span>
+                                <span class="req-text">At least one lowercase letter (a-z)</span>
+                            </div>
+                            <div class="requirement-item" id="req-number">
+                                <span class="req-icon">○</span>
+                                <span class="req-text">At least one number (0-9)</span>
+                            </div>
+                            <div class="requirement-item" id="req-special">
+                                <span class="req-icon">○</span>
+                                <span class="req-text">At least one special character (!@#$%^&*...)</span>
+                            </div>
+                        </div>
                     </div>
                     
                     <div class="form-group">
@@ -70,7 +94,7 @@
                     </div>
                 </div>
                 
-                <button type="submit" class="btn btn-primary">
+                <button type="submit" class="btn btn-primary" id="submitBtn">
                     Create Admin Account
                 </button>
             </form>
@@ -147,7 +171,153 @@
     </div>
 </div>
 
+<style>
+/* Password requirements styling */
+.password-requirements {
+    margin-top: 10px;
+    padding: 12px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    font-size: 0.875rem;
+}
+
+.requirement-header {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+    font-size: 0.85rem;
+}
+
+.requirement-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 0;
+    transition: all 0.3s ease;
+}
+
+.req-icon {
+    font-size: 1rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.req-text {
+    color: #666;
+    transition: color 0.3s ease;
+}
+
+/* Valid requirement styling */
+.requirement-item.valid .req-icon {
+    color: #22c55e;
+}
+
+.requirement-item.valid .req-text {
+    color: #22c55e;
+    text-decoration: line-through;
+}
+
+/* Invalid requirement styling */
+.requirement-item.invalid .req-icon {
+    color: #ef4444;
+}
+
+.requirement-item.invalid .req-text {
+    color: #ef4444;
+}
+</style>
+
 <script>
+// Password validation in real-time
+const passwordInput = document.getElementById('password');
+const submitBtn = document.getElementById('submitBtn');
+
+// Password validation functions
+function validateLength(password) {
+    return password.length >= 8;
+}
+
+function validateUppercase(password) {
+    return /[A-Z]/.test(password);
+}
+
+function validateLowercase(password) {
+    return /[a-z]/.test(password);
+}
+
+function validateNumber(password) {
+    return /\d/.test(password);
+}
+
+function validateSpecial(password) {
+    return /[!@#$%^&*(),.?":{}|<>_\-+=\[\]\\\/`~;]/.test(password);
+}
+
+function updateRequirement(elementId, isValid) {
+    const element = document.getElementById(elementId);
+    element.classList.remove('valid', 'invalid');
+    
+    if (isValid) {
+        element.classList.add('valid');
+        element.querySelector('.req-icon').textContent = '✓';
+    } else {
+        element.classList.add('invalid');
+        element.querySelector('.req-icon').textContent = '✗';
+    }
+}
+
+function validatePassword() {
+    const password = passwordInput.value;
+    
+    // If password is empty, reset all requirements
+    if (password === '') {
+        ['req-length', 'req-uppercase', 'req-lowercase', 'req-number', 'req-special'].forEach(id => {
+            const element = document.getElementById(id);
+            element.classList.remove('valid', 'invalid');
+            element.querySelector('.req-icon').textContent = '○';
+        });
+        submitBtn.disabled = false;
+        return;
+    }
+    
+    // Validate each requirement
+    const checks = {
+        'req-length': validateLength(password),
+        'req-uppercase': validateUppercase(password),
+        'req-lowercase': validateLowercase(password),
+        'req-number': validateNumber(password),
+        'req-special': validateSpecial(password)
+    };
+    
+    // Update UI for each requirement
+    Object.keys(checks).forEach(key => {
+        updateRequirement(key, checks[key]);
+    });
+    
+    // Check if all requirements are met
+    const allValid = Object.values(checks).every(check => check);
+    
+    // Disable submit button if password is not valid
+    submitBtn.disabled = !allValid;
+    
+    return allValid;
+}
+
+// Real-time validation as user types
+passwordInput.addEventListener('input', validatePassword);
+
+// Initial validation on page load
+validatePassword();
+
+// Form submission validation
+document.getElementById('adminForm').addEventListener('submit', function(e) {
+    if (!validatePassword()) {
+        e.preventDefault();
+        alert('Please ensure all password requirements are met before submitting.');
+    }
+});
+
 // Delete confirmation modal
 function confirmDelete(adminId, adminName) {
     document.getElementById('deleteAdminName').textContent = adminName;
