@@ -1,0 +1,36 @@
+# Virtual Environments
+.myenv/
+venv/
+env/
+ENV/
+
+# Python Cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment Files
+.env
+.env.local
+
+# Development/Testing Files
+init_admin.py
+seed_patients.py
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Git
+.git/
+.gitignore
+
+# Documentation (optional - include if you want docs deployed)
+# README.md
+# QUICKSTART.md
+
+# OS Files
+.DS_Store
+Thumbs.db
